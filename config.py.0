@@ -1,0 +1,12 @@
+config = {
+    'thingspeak_ch2_api_key': 'INSERTKEYAPI',
+    'mail_username': 'XXX',
+    'mail_password': 'YYY',
+    'mail_watchers': ['a@b', 'c@d'],
+    'camera_door': {
+        'ip': 'LAN.IP',
+        'username': 'NAME',
+        'password': 'PWD',
+    },
+    'ramfs_dir': '/tmp',
+}

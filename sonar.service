@@ -1,0 +1,10 @@
+[Unit]
+Description=Sonar distance at door, updated on the web max every 20secs
+
+[Service]
+ExecStart=/bin/sh -c '/usr/bin/stdbuf -i0 -o0 -e0 /usr/bin/python /home/pi/projects/sonar/sonar.py 2>&1 | tee -a /tmp/sonar.py.log'
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
