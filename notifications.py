@@ -26,6 +26,7 @@ def startMonitorTimer():
         # Restart the timer from now
         print 'STARTMONITORTIMER: reschedule'
         stopMonitorTimer.cancel()
+        stopMonitorTimer = None
 
     # Start the timer
     print 'STARTMONITORTIMER: creation'
@@ -166,10 +167,16 @@ def doorOpened():
 
 def close():
     global wifiHuntingThread
+    global stopMonitorTimer
 
     print 'Stopping WiFiHunting thread!'
     if wifiHuntingThread is not None:
         wifiHuntingThread.pleaseStop()
+
+    if stopMonitorTimer is not None:
+        print 'STOPMONITORTIMER: exiting'
+        stopMonitorTimer.cancel()
+        stopMonitorTimer = None
 
 def t0():
     try:
