@@ -4,6 +4,7 @@ import threading, time
 import fcntl, sys, os
 import datetime
 import smtplib, email, email.MIMEText
+import retry
 import traceback
 import config
 
@@ -29,17 +30,17 @@ def startMonitorTimer():
         stopMonitorTimer = None
 
     # Start the timer
-    print 'STARTMONITORTIMER: creation'
-    stopMonitorTimer = threading.Timer(30*60, stopMonitor)
+    print 'STARTMONITORTIMER: creation 3*60secs'
+    stopMonitorTimer = threading.Timer(3*60, stopMonitor)
     stopMonitorTimer.start()
 
-def sendMail(m = None):
+def sendMail(m = ''):
     
     dst = config.config['mail_watchers'];
     if type(dst) == type([]):
         dst = ','.join(dst)
 
-    msg = email.MIMEText.MIMEText(m+"\n"+'http://5.101.105.220/images/lamarmora_door/')
+    msg = email.MIMEText.MIMEText(config.config['remote_url'] + '\n' + m)
     #msg['To'] = dst
     msg['Subject'] = 'Porta aperta in via Lamarmora!'
 
@@ -51,7 +52,9 @@ def sendMail(m = None):
     server.sendmail(config.config['mail_username'], config.config['mail_watchers'], msg.as_string())
 
 # Interact with D-Link DCS-5020L Camera
+@retry.retries(3)
 def request_response(resource, data):
+    print datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3], 'request_response2webcam', resource
     req = urllib2.Request('http://192.168.1.70' + resource, urllib.urlencode(data))
     auth_string = base64.encodestring('%s:%s' %(config.config['camera_door']['username'], config.config['camera_door']['password'])).replace('\n', '')
     req.add_header('Authorization', 'Basic %s' % auth_string)
@@ -208,8 +211,10 @@ if __name__ == '__main__':
     #t0()
     #t1()
     #t01()
-    #sendMail()
-    startMonitorTimer()
-    time.sleep(2)
-    startMonitorTimer()
-    time.sleep(10)
+    sendMail()
+    #motionDetectionSet(0)
+    
+    #startMonitorTimer()
+    #time.sleep(2)
+    #startMonitorTimer()
+    #time.sleep(10)

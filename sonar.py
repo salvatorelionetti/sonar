@@ -37,7 +37,7 @@ def isDistChanged(distPrev, distCur):
      * no previous measure (first sample)
      * more than 5mm far
     """
-    return (distPrev is None) or abs(distPrev-distCur)>5 # 5mm
+    return (distPrev is None) or abs(distPrev-distCur)>10 # 6mm
 
 def sendNotification():
     global logging

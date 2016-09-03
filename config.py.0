@@ -9,4 +9,5 @@ config = {
         'password': 'PWD',
     },
     'ramfs_dir': '/tmp',
+    'remote_url': 'http://path_of_url_sent_by_email',
 }

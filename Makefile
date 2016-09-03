@@ -1,4 +1,5 @@
 install: /lib/systemd/system/sonar.service
+	sudo apt-get install python-serial
 
 /lib/systemd/system/sonar.service: sonar.service
 	sudo cp sonar.service /lib/systemd/system
