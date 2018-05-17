@@ -19,6 +19,7 @@ def stopMonitor():
     print 'Sound %s!'%status
     motionDetectionSet(active)
     soundDetectionSet(active)
+    motionDetectionSet(active)
     
 def startMonitorTimer():
     global stopMonitorTimer

@@ -14,7 +14,8 @@ import config
 sonarConfig = {
     'LogFileSize': 256*1024,
     'LogFileName': '/tmp/sonar.raw',
-    'SerialFileName': '/dev/ttyUSB1',
+    'SerialFileName': '/dev/sonar.serial',
+#    'SerialFileName': '/dev/ttyUSB1',
     'SerialBaudRate': 57600,
 }
 
@@ -100,6 +101,10 @@ def decodeMessage(msg, sonarLog, serializer):
     doLog = False
 
     m = re.match('R([0-9]*)', msg)
+    # TODO: Is there a better framing? Only initial problem?
+    if m is None:
+        logging.error('Trying to skip initial bytes '+ str(len(msg)) + str(msg))
+    	m = re.search('R([0-9]*)', msg)
     dist = -1
 
     if m is not None and len(m.groups())==1:
